@@ -1,0 +1,127 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 10px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background var(--duration) var(--ease-standard),
+    border-color var(--duration) var(--ease-standard),
+    color var(--duration) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.btn:hover {
+  border-color: var(--color-primary-text);
+  background: var(--color-surface-hover);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  transform: none;
+}
+
+.btn .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.btn--primary {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.btn--primary:hover {
+  border-color: var(--color-accent-hover);
+  background: var(--color-accent-hover);
+}
+
+.btn--secondary {
+  border-color: var(--color-primary);
+  background: transparent;
+  color: var(--color-primary-text);
+}
+
+.btn--secondary:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.btn--ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-muted-fg);
+}
+
+.btn--ghost:hover {
+  border-color: transparent;
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.btn--danger {
+  border-color: var(--color-destructive);
+  background: var(--color-destructive);
+  color: var(--color-on-destructive);
+}
+
+.btn--danger:hover {
+  border-color: var(--color-destructive);
+  background: var(--color-destructive);
+  color: var(--color-on-destructive);
+  opacity: 0.9;
+}
+
+.btn--danger-ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-destructive);
+}
+
+.btn--danger-ghost:hover {
+  border-color: transparent;
+  background: var(--color-destructive-soft);
+  color: var(--color-destructive);
+}
+
+.btn--sm {
+  min-height: 38px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+}
+
+.btn--sm .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.btn--icon {
+  width: 44px;
+  padding: 0;
+}
+
+@media (pointer: coarse) {
+  .btn--sm {
+    min-height: 44px;
+  }
+}

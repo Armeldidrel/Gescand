@@ -1,0 +1,340 @@
+/* Mobile first : les styles de base ciblent le téléphone. */
+@media (min-width: 680px) {
+  .top {
+    gap: 16px;
+    padding: 0 24px;
+  }
+
+  .brand {
+    gap: 12px;
+  }
+
+  .brand__mark {
+    width: 42px;
+    height: 42px;
+  }
+
+  .brand__name {
+    font-size: 1.05rem;
+  }
+
+  .brand__sub {
+    font-size: 0.75rem;
+  }
+
+  .mode-badge {
+    padding: 5px 10px;
+    font-size: 0.7rem;
+  }
+
+  main {
+    padding: 28px 24px calc(var(--nav-height) + 32px + env(safe-area-inset-bottom));
+  }
+
+  .page {
+    gap: 18px;
+  }
+
+  .span-3 {
+    grid-column: span 6;
+  }
+
+  .panel {
+    padding: 22px;
+  }
+
+  .panel__head {
+    margin-bottom: 14px;
+  }
+
+  .kpi {
+    min-height: 160px;
+  }
+
+  .kpi__label {
+    font-size: 0.76rem;
+  }
+
+  .kpi__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .insight {
+    padding: 18px;
+  }
+
+  .weeks {
+    gap: 10px;
+    height: 200px;
+  }
+
+  .week__label {
+    font-size: 0.68rem;
+  }
+
+  .bar {
+    grid-template-columns: 140px minmax(0, 1fr) 48px;
+    gap: 14px;
+  }
+
+  .toolbar {
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
+    align-items: center;
+    padding: 16px;
+  }
+
+  .toolbar .field--search {
+    min-width: 200px;
+  }
+
+  .toolbar select {
+    width: auto;
+  }
+
+  .toolbar .btn {
+    width: auto;
+  }
+
+  .form__grid {
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+
+  .form__actions {
+    justify-content: flex-end;
+  }
+
+  .form__actions .btn {
+    flex: 0 0 auto;
+  }
+
+  .todo {
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 14px 16px;
+  }
+
+  .todo > :last-child {
+    grid-column: auto;
+  }
+
+  .todo .idx {
+    width: 52px;
+    height: 52px;
+    font-size: 1.1rem;
+  }
+
+  .rel__actions {
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
+
+  .rel__actions .btn {
+    flex: 0 0 auto;
+  }
+
+  th {
+    padding: 12px 18px;
+  }
+
+  td {
+    padding: 14px 18px;
+  }
+
+  .table-card__head {
+    padding: 16px 20px;
+  }
+
+  .table-card__head h2 {
+    font-size: 1.1rem;
+  }
+
+  dialog {
+    border-radius: var(--radius-xl);
+  }
+
+  .dialog__head {
+    padding: 24px 26px 16px;
+  }
+
+  .dialog__body {
+    padding: 20px 26px 24px;
+  }
+
+  .auth {
+    padding: 24px;
+  }
+
+  .auth__shell {
+    border-radius: var(--radius-xl);
+  }
+
+  .auth__card {
+    padding: 32px;
+  }
+
+  .auth__title {
+    font-size: 1.8rem;
+  }
+
+  #toast {
+    right: 24px;
+    left: auto;
+    max-width: 420px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .top {
+    min-height: 68px;
+    gap: 24px;
+    padding: 0 32px;
+  }
+
+  .brand {
+    flex: 0 0 auto;
+  }
+
+  .brand__mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+  }
+
+  .brand__name {
+    font-size: 1.1rem;
+  }
+
+  .brand__sub {
+    font-size: 0.76rem;
+  }
+
+  .nav {
+    position: static;
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    order: 2;
+  }
+
+  .nav__item {
+    flex-direction: row;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 12px;
+    font-size: 0.875rem;
+  }
+
+  .nav__item .icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .top__meta {
+    order: 3;
+  }
+
+  main {
+    padding: 36px 32px 56px;
+  }
+
+  .page {
+    gap: 20px;
+  }
+
+  .span-3 {
+    grid-column: span 3;
+  }
+
+  .span-4 {
+    grid-column: span 4;
+  }
+
+  .span-6 {
+    grid-column: span 6;
+  }
+
+  .span-8 {
+    grid-column: span 8;
+  }
+
+  .panel {
+    padding: 24px;
+  }
+
+  .panel__head {
+    margin-bottom: 14px;
+  }
+
+  .kpi {
+    min-height: 164px;
+  }
+
+  .kpi__value {
+    font-size: 2.7rem;
+  }
+
+  .weeks {
+    height: 210px;
+  }
+
+  .week__label {
+    font-size: 0.7rem;
+  }
+
+  .auth {
+    padding: 32px;
+  }
+
+  .auth__shell {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .auth__aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .auth__aside h2 {
+    margin-top: 24px;
+    color: var(--color-on-primary);
+    font-size: 2rem;
+  }
+
+  .auth__aside p {
+    max-width: 42ch;
+    color: var(--color-on-primary);
+    opacity: 0.82;
+  }
+
+  .auth__card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .auth__title {
+    font-size: 1.9rem;
+  }
+
+  .auth__form .btn {
+    align-self: flex-start;
+  }
+
+  #toast {
+    right: 24px;
+    bottom: 24px;
+  }
+}

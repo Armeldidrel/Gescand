@@ -1,0 +1,52 @@
+.coach {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.insight {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-primary-soft);
+  color: var(--color-foreground);
+}
+
+.insight__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  background: var(--color-surface);
+  color: var(--color-primary-text);
+}
+
+.insight__icon .icon {
+  width: 19px;
+  height: 19px;
+}
+
+.insight__label {
+  margin-bottom: 4px;
+  color: var(--color-primary-text);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bubble {
+  color: var(--color-text-soft);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.bubble:last-child {
+  margin-bottom: 0;
+}

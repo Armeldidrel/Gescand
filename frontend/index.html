@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f0f9ff">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Suivi de candidatures en alternance : candidatures, relances, entretiens et compétences.">
+  <title>Tableau de bord · Alternance</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap">
+  <script>
+    (() => {
+      try {
+        const stored = localStorage.getItem('alternance-theme');
+        const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+        document
+          .querySelector('meta[name="theme-color"]')
+          .setAttribute('content', theme === 'dark' ? '#071825' : '#f0f9ff');
+      } catch {
+        document.documentElement.dataset.theme = 'light';
+      }
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <section id="auth" class="auth" role="dialog" aria-modal="true" hidden aria-labelledby="authTitle">
+    <div class="auth__shell">
+      <aside class="auth__aside">
+        <div class="brand">
+          <span class="brand__mark"><span data-icon="briefcase"></span></span>
+          <span class="brand__text">
+            <span class="brand__name">Alternance</span>
+            <span class="brand__sub">Suivi de candidatures</span>
+          </span>
+        </div>
+        <h2>Gardez le cap sur votre alternance.</h2>
+        <p>Un seul tableau de bord pour suivre vos candidatures, vos relances et vos entretiens, sans rien laisser passer.</p>
+        <ul class="auth__features">
+          <li><span data-icon="chart"></span><span>Visualisez votre progression semaine après semaine.</span></li>
+          <li><span data-icon="bell"></span><span>Recevez un rappel quand une relance arrive à échéance.</span></li>
+          <li><span data-icon="lock"></span><span>Vos données restent les vôtres, en ligne ou en local.</span></li>
+        </ul>
+      </aside>
+      <div class="auth__card">
+        <span class="kicker">Connexion</span>
+        <h2 id="authTitle" class="auth__title">Mes candidatures</h2>
+        <p class="sub">Entrez votre email pour recevoir un lien de connexion sécurisé. Aucun mot de passe à retenir.</p>
+        <form id="authForm" class="auth__form">
+          <label for="authEmail">Email</label>
+          <input id="authEmail" type="email" name="email" required autocomplete="email" placeholder="prenom@exemple.fr">
+          <button id="authSubmit" class="btn btn--primary" type="submit"><span data-icon="mail"></span>Recevoir le lien</button>
+        </form>
+        <p id="authMsg" class="auth__msg" role="status" aria-live="polite"></p>
+        <p class="auth__hint">Astuce : sans clés Supabase, l'app fonctionne en mode local.</p>
+      </div>
+    </div>
+  </section>
+
+  <header class="top">
+    <a class="brand" href="#/home" aria-label="Alternance, retour à l'accueil">
+      <span class="brand__mark"><span data-icon="briefcase"></span></span>
+      <span class="brand__text">
+        <span class="brand__name">Alternance</span>
+        <span class="brand__sub">Suivi de candidatures</span>
+      </span>
+    </a>
+
+    <nav id="nav" class="nav" aria-label="Navigation principale">
+      <button class="nav__item on" data-v="home" type="button" aria-current="page">
+        <span data-icon="home"></span><span>Accueil</span>
+      </button>
+      <button class="nav__item" data-v="cands" type="button">
+        <span data-icon="file-text"></span><span>Candidatures</span>
+      </button>
+      <button class="nav__item" data-v="rel" type="button">
+        <span data-icon="bell"></span><span>Relances</span>
+      </button>
+      <button class="nav__item" data-v="profil" type="button">
+        <span data-icon="award"></span><span>Compétences</span>
+      </button>
+    </nav>
+
+    <div class="top__meta">
+      <span id="modeBadge" class="mode-badge">Mode local</span>
+      <button id="themeToggle" class="icon-btn" type="button" aria-label="Passer en thème sombre"></button>
+      <button id="signOut" class="btn btn--ghost btn--sm" type="button" hidden>
+        <span data-icon="logout"></span><span>Déconnexion</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <h1 class="sr-only">Suivi de candidatures en alternance</h1>
+
+    <section class="view on" id="v-home" aria-labelledby="greet">
+      <div class="page">
+        <section class="panel panel--focus span-8">
+          <div class="panel__head">
+            <span class="kicker"><span data-icon="bell"></span>À relancer</span>
+            <span class="pill" id="focusCount">0 en attente</span>
+          </div>
+          <h2 id="greet">Bonjour</h2>
+          <p class="sub" id="today"></p>
+          <div id="focus"></div>
+          <div class="panel__foot">
+            <button class="btn btn--primary" type="button" data-act="new">
+              <span data-icon="plus"></span>Nouvelle candidature
+            </button>
+          </div>
+        </section>
+
+        <aside class="span-4 coach" aria-label="Conseil et taux de réponse">
+          <div class="insight">
+            <span class="insight__icon"><span data-icon="lightbulb"></span></span>
+            <div>
+              <div class="insight__label">Conseil du jour</div>
+              <p class="bubble" id="bubble"></p>
+            </div>
+          </div>
+
+          <div class="panel kpi kpi--primary">
+            <div class="kpi__top">
+              <span class="kpi__label">Taux de réponse</span>
+              <span class="kpi__icon"><span data-icon="percent"></span></span>
+            </div>
+            <div>
+              <div class="kpi__value"><span id="kRate">–</span></div>
+              <div class="hint" id="kRateHint"></div>
+            </div>
+            <div class="meter" aria-hidden="true"><i id="rateBar"></i></div>
+          </div>
+        </aside>
+
+        <div class="panel kpi span-4">
+          <div class="kpi__top">
+            <span class="kpi__label">Candidatures envoyées</span>
+            <span class="kpi__icon"><span data-icon="send"></span></span>
+          </div>
+          <div class="kpi__value"><span id="kTotal">0</span></div>
+          <div class="hint" id="kTotalHint"></div>
+        </div>
+
+        <div class="panel kpi span-4">
+          <div class="kpi__top">
+            <span class="kpi__label">Entretiens et tests</span>
+            <span class="kpi__icon"><span data-icon="calendar"></span></span>
+          </div>
+          <div class="kpi__value"><span id="kInter">0</span></div>
+          <div class="hint">Étapes à préparer</div>
+        </div>
+
+        <div class="panel kpi span-4">
+          <div class="kpi__top">
+            <span class="kpi__label">Délai moyen de réponse</span>
+            <span class="kpi__icon"><span data-icon="clock"></span></span>
+          </div>
+          <div class="kpi__value"><span id="kAvg">–</span></div>
+          <div class="hint">En jours, depuis l'envoi</div>
+        </div>
+
+        <div class="panel span-12">
+          <span class="kicker">Étapes</span>
+          <h2>Où en sont vos candidatures</h2>
+          <p class="sub">Chaque segment est une étape. Plus il est large, plus il y a de candidatures.</p>
+          <div class="seg" id="seg" role="img" aria-label="Répartition des candidatures par étape"></div>
+          <div class="legend" id="legend"></div>
+        </div>
+
+        <div class="panel span-6">
+          <span class="kicker">Activité</span>
+          <h2>Envois par semaine</h2>
+          <p class="sub">Huit dernières semaines. La barre verte est la semaine en cours.</p>
+          <div class="weeks" id="weeks" role="img" aria-label="Envois par semaine"></div>
+        </div>
+
+        <div class="panel span-6">
+          <span class="kicker">Canaux</span>
+          <h2>Réponses par canal</h2>
+          <p class="sub">Part des candidatures qui ont reçu une réponse.</p>
+          <div id="canaux"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="v-cands" aria-labelledby="candsTitle">
+      <div class="toolbar panel">
+        <div class="field field--search">
+          <label class="sr-only" for="q">Rechercher une candidature</label>
+          <span class="field__icon"><span data-icon="search"></span></span>
+          <input id="q" type="search" placeholder="Entreprise, poste, ville…" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label class="sr-only" for="fs">Filtrer par statut</label>
+          <select id="fs"></select>
+        </div>
+
+        <div class="field">
+          <label class="sr-only" for="fo">Trier les candidatures</label>
+          <select id="fo">
+            <option value="relance">Trier par prochaine relance</option>
+            <option value="date">Trier par date d'envoi</option>
+            <option value="score">Trier par correspondance</option>
+            <option value="nom">Trier de A à Z</option>
+          </select>
+        </div>
+
+        <button class="btn btn--primary" type="button" data-act="new">
+          <span data-icon="plus"></span>Nouvelle candidature
+        </button>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card__head">
+          <h2 id="candsTitle">Vos candidatures</h2>
+          <span class="pill" id="candCount" aria-live="polite">0 résultat</span>
+        </div>
+        <div class="tbl">
+          <table>
+            <caption class="sr-only">Liste des candidatures avec leur statut, leurs dates et leur correspondance</caption>
+            <thead>
+              <tr>
+                <th scope="col">Entreprise et poste</th>
+                <th scope="col">Statut</th>
+                <th scope="col">Envoyée</th>
+                <th scope="col">Relance</th>
+                <th scope="col">Correspondance</th>
+                <th scope="col"><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="v-rel" aria-labelledby="relTitle">
+      <div class="panel">
+        <div class="panel__head">
+          <span class="kicker"><span data-icon="bell"></span>Relances</span>
+          <span class="pill" id="relCount">0 à faire</span>
+        </div>
+        <h2 id="relTitle">Relances à faire</h2>
+        <p class="sub">« Relancée » reporte la prochaine relance de sept jours. « Modèle » copie un message prêt à envoyer.</p>
+        <div id="relList"></div>
+      </div>
+    </section>
+
+    <section class="view" id="v-profil" aria-labelledby="profilTitle">
+      <div class="panel skills">
+        <div class="panel__head">
+          <span class="kicker"><span data-icon="award"></span>Compétences</span>
+          <span class="pill" id="skillCount">0 compétence</span>
+        </div>
+        <h2 id="profilTitle">Vos compétences</h2>
+        <p class="sub">Listez-les séparées par des virgules. Chaque fiche de poste est comparée à cette liste pour calculer la correspondance.</p>
+        <label for="skillsIn">Liste des compétences</label>
+        <textarea id="skillsIn" class="textarea--tall" placeholder="python, sql, excel, react, communication, power bi, seo" aria-describedby="skillsHelp"></textarea>
+        <p id="skillsHelp" class="form__hint">Séparez chaque compétence par une virgule. La correspondance se met à jour automatiquement.</p>
+        <div class="skill-cloud" id="skillCloud" aria-hidden="true"></div>
+        <div class="mt-4">
+          <button class="btn btn--primary" id="saveSkills" type="button">
+            <span data-icon="check"></span>Enregistrer
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="dlg" aria-labelledby="dlgTitle" aria-describedby="dlgSub">
+    <div class="dialog__head">
+      <div>
+        <span class="kicker">Fiche</span>
+        <h2 id="dlgTitle" class="dialog__title">Nouvelle candidature</h2>
+        <p id="dlgSub" class="sub">Seuls l'entreprise et le poste sont obligatoires.</p>
+      </div>
+      <button class="icon-btn dialog__close" type="button" id="dlgClose" aria-label="Fermer la fiche">
+        <span data-icon="x"></span>
+      </button>
+    </div>
+
+    <div class="dialog__body">
+      <form id="f" class="form">
+        <fieldset class="form__group">
+          <legend class="form__legend">Entreprise et poste</legend>
+          <div class="form__grid">
+            <label>
+              <span class="field__label">Entreprise <span class="req" aria-hidden="true">*</span></span>
+              <input name="entreprise" required autocomplete="organization">
+            </label>
+            <label>
+              <span class="field__label">Poste <span class="req" aria-hidden="true">*</span></span>
+              <input name="poste" required autocomplete="organization-title">
+            </label>
+            <label>
+              <span class="field__label">Ville</span>
+              <input name="ville" autocomplete="address-level2">
+            </label>
+            <label>
+              <span class="field__label">Secteur</span>
+              <input name="secteur" placeholder="Santé, tech, industrie">
+            </label>
+            <label>
+              <span class="field__label">Taille</span>
+              <select name="taille"></select>
+            </label>
+            <label>
+              <span class="field__label">Site web</span>
+              <input name="site" type="url" autocomplete="url" placeholder="https://…">
+            </label>
+            <label>
+              <span class="field__label">Type de contrat</span>
+              <select name="type"></select>
+            </label>
+            <label>
+              <span class="field__label">Canal</span>
+              <select name="canal"></select>
+            </label>
+            <label>
+              <span class="field__label">Statut</span>
+              <select name="statut"></select>
+            </label>
+            <label>
+              <span class="field__label">Motivation</span>
+              <select name="motivation"></select>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__group">
+          <legend class="form__legend">Suivi et contact</legend>
+          <div class="form__grid">
+            <label>
+              <span class="field__label">Date d'envoi</span>
+              <input type="date" name="dateCand">
+            </label>
+            <label>
+              <span class="field__label">Date de relance prévue</span>
+              <input type="date" name="dateRelance">
+              <span class="form__hint">Par défaut, sept jours après l'envoi.</span>
+            </label>
+            <label>
+              <span class="field__label">Date de réponse</span>
+              <input type="date" name="reponseDate">
+            </label>
+            <label>
+              <span class="field__label">Contact (RH, manager)</span>
+              <input name="contact" autocomplete="name">
+            </label>
+            <label>
+              <span class="field__label">Email du contact</span>
+              <input type="email" name="email" autocomplete="email">
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__group">
+          <legend class="form__legend">Détails</legend>
+          <div class="form__grid">
+            <label class="full">
+              <span class="field__label">Lien de l'annonce</span>
+              <input type="url" name="lien" placeholder="https://…">
+            </label>
+            <label class="full">
+              <span class="field__label">Fiche de poste (texte collé)</span>
+              <textarea name="fiche" class="textarea--medium"></textarea>
+              <span class="form__hint">Collez la fiche pour calculer automatiquement la correspondance avec vos compétences.</span>
+            </label>
+            <label class="full">
+              <span class="field__label">Notes</span>
+              <textarea name="notes"></textarea>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="form__actions">
+          <button class="btn btn--ghost" type="button" id="cancel">Annuler</button>
+          <button class="btn btn--primary" type="submit">
+            <span data-icon="check"></span>Enregistrer
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+/* Pipeline */
+.seg {
+  display: flex;
+  gap: 2px;
+  height: 14px;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--color-muted);
+}
+
+.seg i {
+  display: block;
+  height: 100%;
+  min-width: 2px;
+  background: var(--color-primary);
+}
+
+.seg i:first-child {
+  border-radius: var(--radius-full) 2px 2px var(--radius-full);
+}
+
+.seg i:last-child {
+  border-radius: 2px var(--radius-full) var(--radius-full) 2px;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  margin-top: 16px;
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-2);
+  color: var(--color-muted-fg);
+  font-size: 0.75rem;
+}
+
+.legend b {
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.sw {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  border-radius: var(--radius-full);
+}
+
+/* Envois par semaine */
+.weeks {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 6px;
+  height: 160px;
+  margin-top: 8px;
+}
+
+.week {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 6px;
+  min-width: 0;
+  text-align: center;
+}
+
+.week__value {
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.week__track {
+  display: flex;
+  align-items: flex-end;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: var(--radius-xs);
+  background: var(--chart-track);
+}
+
+.week__track i {
+  display: block;
+  width: 100%;
+  min-height: 4px;
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+  background: var(--chart-bar);
+  transition: height var(--duration-slow) var(--ease-out);
+}
+
+.week:last-child .week__track i {
+  background: var(--chart-bar-current);
+}
+
+.week__label {
+  overflow: hidden;
+  color: var(--color-muted-fg);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Canaux */
+.bar {
+  display: grid;
+  grid-template-columns: minmax(72px, 96px) minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  color: var(--color-text-soft);
+  font-size: 0.8125rem;
+}
+
+.bar:last-child {
+  margin-bottom: 0;
+}
+
+.bar b {
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-align: right;
+}
+
+.bar .t {
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-3);
+}
+
+.bar .t i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-secondary);
+  transition: width var(--duration-slow) var(--ease-out);
+}

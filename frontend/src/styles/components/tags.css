@@ -1,0 +1,69 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border: 1px solid var(--tag-border, var(--color-border));
+  border-radius: var(--radius-full);
+  background: var(--tag-bg, var(--color-surface-2));
+  color: var(--tag-fg, var(--color-text-soft));
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.s-aenvoyer {
+  --tag-bg: var(--status-aenvoyer-bg);
+  --tag-fg: var(--status-aenvoyer-fg);
+  --tag-border: var(--status-aenvoyer-border);
+}
+
+.s-envoyee {
+  --tag-bg: var(--status-envoyee-bg);
+  --tag-fg: var(--status-envoyee-fg);
+  --tag-border: var(--status-envoyee-border);
+}
+
+.s-relancee {
+  --tag-bg: var(--status-relancee-bg);
+  --tag-fg: var(--status-relancee-fg);
+  --tag-border: var(--status-relancee-border);
+}
+
+.s-entretien,
+.s-test {
+  --tag-bg: var(--status-entretien-bg);
+  --tag-fg: var(--status-entretien-fg);
+  --tag-border: var(--status-entretien-border);
+}
+
+.s-test {
+  --tag-bg: var(--status-test-bg);
+  --tag-fg: var(--status-test-fg);
+  --tag-border: var(--status-test-border);
+}
+
+.s-offre {
+  --tag-bg: var(--status-offre-bg);
+  --tag-fg: var(--status-offre-fg);
+  --tag-border: var(--status-offre-border);
+}
+
+.s-refus {
+  --tag-bg: var(--status-refus-bg);
+  --tag-fg: var(--status-refus-fg);
+  --tag-border: var(--status-refus-border);
+}
+
+.s-sans {
+  --tag-bg: var(--status-sans-bg);
+  --tag-fg: var(--status-sans-fg);
+  --tag-border: var(--status-sans-border);
+}
+
+.tag--skill {
+  --tag-bg: var(--color-primary-soft);
+  --tag-fg: var(--color-primary-text);
+  --tag-border: var(--color-border-strong);
+}

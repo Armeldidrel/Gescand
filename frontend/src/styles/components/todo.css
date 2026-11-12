@@ -1,0 +1,83 @@
+.todo {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 13px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.todo + .todo {
+  margin-top: 10px;
+}
+
+.todo > :last-child {
+  grid-column: 1 / -1;
+}
+
+.todo .idx {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-text);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.todo.late .idx {
+  background: var(--color-destructive-soft);
+  color: var(--color-destructive);
+}
+
+.todo.today .idx {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.todo .n {
+  color: var(--color-text);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.todo .meta {
+  margin-top: 2px;
+  color: var(--color-muted-fg);
+  font-size: 0.78rem;
+}
+
+.todo .due {
+  margin-top: 4px;
+  color: var(--color-muted-fg);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.todo.late .due {
+  color: var(--color-destructive);
+}
+
+.todo.today .due {
+  color: var(--color-warning);
+}
+
+.todo__role {
+  color: var(--color-muted-fg);
+  font-weight: 400;
+}
+
+.rel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rel__actions .btn {
+  flex: 1 1 auto;
+}

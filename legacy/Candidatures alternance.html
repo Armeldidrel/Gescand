@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Candidatures alternance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+:root{--paper:#F4F0E6;--white:#FFFFFF;--ink:#141414;--screen:#D9D4C7;--mid:#8A8478;--red:#E4312B;--line:#141414}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Zen Kaku Gothic New",system-ui,sans-serif;font-size:15px;line-height:1.55;min-height:100vh}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.num,.mono{font-family:"Zen Kaku Gothic New",system-ui,sans-serif;font-variant-numeric:tabular-nums;font-weight:700}
+.display{font-family:Bangers,Impact,sans-serif;font-weight:400;letter-spacing:.03em;line-height:1}
+
+/* Bandeau de titre façon cartouche */
+.top{background:var(--ink);color:var(--white);padding:0 40px;display:flex;align-items:stretch;justify-content:space-between;gap:24px;flex-wrap:wrap;border-bottom:4px solid var(--red)}
+.brand{display:flex;align-items:center;gap:16px;padding:18px 0}
+.brand .k{background:var(--red);color:var(--white);padding:4px 12px;font-family:Bangers,Impact,sans-serif;font-size:1.6rem;letter-spacing:.04em;transform:skewX(-8deg)}
+.brand .t{font-family:Bangers,Impact,sans-serif;font-size:1.9rem;letter-spacing:.04em}
+nav{display:flex;align-items:stretch}
+nav button{all:unset;cursor:pointer;padding:0 20px;display:flex;align-items:center;gap:10px;color:#CFCAC0;font-weight:700;font-size:.9rem;border-left:1px solid #333}
+nav button b{font-family:Bangers,Impact,sans-serif;font-weight:400;color:var(--mid);font-size:1.1rem}
+nav button:hover{color:var(--white)}
+nav button.on{color:var(--white);background:#2A2A2A;box-shadow:inset 0 -4px 0 var(--red)}
+nav button.on b{color:var(--red)}
+
+main{padding:40px;max-width:1280px;margin:0 auto}
+.view{display:none}.view.on{display:block}
+
+/* Cases de planche : gouttières blanches, bordures d'encre */
+.page{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.panel{background:var(--white);border:3px solid var(--line);padding:26px 26px 24px;position:relative}
+.kicker{display:inline-block;background:var(--ink);color:var(--white);font-family:Bangers,Impact,sans-serif;font-size:1.05rem;letter-spacing:.06em;padding:3px 12px 2px;transform:skewX(-8deg);margin-bottom:14px}
+h2{font-size:1.35rem;margin:0 0 6px;font-weight:700;letter-spacing:.01em}
+.sub{color:#4F4B43;font-size:.9rem;margin:0 0 18px}
+.span-8{grid-column:span 8}.span-4{grid-column:span 4}.span-6{grid-column:span 6}.span-12{grid-column:span 12}.span-3{grid-column:span 3}
+
+/* Boutons */
+.btn{border:3px solid var(--ink);background:var(--white);color:var(--ink);padding:9px 16px;cursor:pointer;font:inherit;font-weight:700;font-size:.85rem;white-space:nowrap}
+.btn:hover{background:var(--ink);color:var(--white)}
+.btn.red{background:var(--red);border-color:var(--red);color:var(--white)}
+.btn.red:hover{background:var(--ink);border-color:var(--ink)}
+.btn.ink{background:var(--ink);color:var(--white)}
+.btn.ink:hover{background:var(--red);border-color:var(--red)}
+.btn.sm{padding:5px 11px;font-size:.78rem}
+.btn.ghost{border-color:transparent;background:transparent;text-decoration:underline;text-underline-offset:4px;padding:5px 8px}
+.btn.ghost:hover{background:transparent;color:var(--red)}
+
+/* Résumé : grandes cases chiffrées */
+.kpi{display:flex;flex-direction:column;justify-content:space-between;min-height:168px}
+.kpi .v{font-family:Bangers,Impact,sans-serif;font-size:4.6rem;line-height:.9;letter-spacing:.02em}
+.kpi .l{font-weight:700;font-size:.9rem;margin-top:12px}
+.kpi .hint{font-size:.8rem;color:#4F4B43}
+.kpi.dark{background:var(--ink);color:var(--white)}
+.kpi.dark .hint{color:#BDB7AB}
+.kpi.dark .v{color:var(--white)}
+
+/* Bulle de conseil */
+.bubble{position:relative;background:var(--white);border:3px solid var(--ink);border-radius:28px;padding:18px 22px;font-weight:500;font-size:.98rem}
+.bubble:before{content:"";position:absolute;left:44px;bottom:-22px;border:12px solid transparent;border-top:22px solid var(--ink);border-bottom:0}
+.bubble:after{content:"";position:absolute;left:47px;bottom:-16px;border:9px solid transparent;border-top:16px solid var(--white);border-bottom:0}
+.coach{display:flex;flex-direction:column;gap:34px}
+.coach .who{font-family:Bangers,Impact,sans-serif;font-size:1.2rem;letter-spacing:.05em;color:var(--red)}
+
+/* Liste de relances */
+.todo{display:grid;grid-template-columns:52px 1fr auto;gap:16px;align-items:center;padding:14px 0;border-top:2px solid var(--ink)}
+.todo:first-of-type{border-top:none;padding-top:0}
+.todo .idx{width:52px;height:52px;border:3px solid var(--ink);display:flex;align-items:center;justify-content:center;font-family:Bangers,Impact,sans-serif;font-size:1.6rem;background:var(--paper)}
+.todo.late .idx{background:var(--red);border-color:var(--red);color:var(--white)}
+.todo.today .idx{background:var(--ink);color:var(--white)}
+.todo .n{font-weight:700}
+.todo .meta{font-size:.84rem;color:#4F4B43}
+.due{font-weight:700;font-size:.8rem}
+.todo.late .due{color:var(--red)}
+
+/* Pipeline en barre */
+.seg{display:flex;height:50px;border:3px solid var(--ink);background:var(--screen)}
+.seg i{display:block;height:100%;border-right:2px solid var(--ink)}
+.seg i:last-child{border-right:none}
+.legend{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:16px;font-size:.86rem}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend b{font-weight:700;min-width:18px}
+.sw{width:14px;height:14px;border:2px solid var(--ink);display:inline-block}
+
+/* Graphiques */
+.weeks{display:flex;align-items:flex-end;gap:14px;height:220px;border-bottom:3px solid var(--ink);padding-top:8px}
+.weeks>div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:.74rem;color:#4F4B43}
+.weeks i{width:100%;background:var(--ink)}
+.weeks>div:last-child i{background:var(--red)}
+.weeks b{font-family:Bangers,Impact,sans-serif;font-weight:400;font-size:1.25rem;color:var(--ink);margin-bottom:4px}
+.bar{display:grid;grid-template-columns:160px 1fr 52px;align-items:center;gap:14px;margin:14px 0;font-size:.88rem}
+.bar .t{height:16px;border:2px solid var(--ink);background:var(--screen)}
+.bar .t i{display:block;height:100%;background:var(--ink)}
+.bar b{text-align:right;font-weight:700}
+
+/* Tableau */
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px;align-items:center}
+input,select,textarea{background:var(--white);border:2px solid var(--ink);color:var(--ink);padding:10px 12px;font:inherit;font-size:.92rem;width:100%;border-radius:0}
+.toolbar input{max-width:340px}
+.toolbar select{width:auto;max-width:250px}
+textarea{min-height:70px;resize:vertical}
+label{font-size:.8rem;font-weight:700;display:flex;flex-direction:column;gap:6px}
+.tbl{background:var(--white);border:3px solid var(--ink);overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:920px}
+th{text-align:left;font-size:.78rem;font-weight:700;letter-spacing:.06em;padding:12px 16px;background:var(--ink);color:var(--white)}
+td{padding:14px 16px;border-top:2px solid var(--ink);vertical-align:middle;font-size:.9rem}
+tr.row-click{cursor:pointer}
+tr.row-click:hover td{background:#F4F0E6}
+td .co{font-weight:700;font-size:1rem}
+td .sm2{font-size:.82rem;color:#4F4B43}
+td.date{font-variant-numeric:tabular-nums;white-space:nowrap;font-size:.86rem}
+td select{width:auto;padding:6px 8px;font-size:.82rem}
+.dt{display:block;font-size:.76rem;font-weight:700}
+.dt.late{color:var(--red)}
+.dt.today{color:var(--ink);text-decoration:underline}
+.match{display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:700}
+.match .t{width:72px;height:10px;border:2px solid var(--ink);background:var(--white)}
+.match .t i{display:block;height:100%;background:var(--ink)}
+.tag{display:inline-block;padding:3px 10px;font-size:.74rem;font-weight:700;border:2px solid var(--ink);white-space:nowrap}
+.s-aenvoyer{background:var(--white);color:var(--ink)}
+.s-envoyee{background:var(--screen);color:var(--ink)}
+.s-relancee{background:var(--ink);color:var(--white)}
+.s-entretien,.s-test{background:var(--red);border-color:var(--red);color:var(--white)}
+.s-offre{background:var(--ink);color:var(--red);border-color:var(--red)}
+.s-refus{background:var(--white);color:var(--mid);border-color:var(--mid)}
+.s-sans{background:var(--mid);border-color:var(--mid);color:var(--white)}
+.empty{padding:28px 6px;color:#4F4B43}
+.onboard{padding:40px 20px;text-align:center;border:3px dashed var(--ink)}
+.onboard .display{font-size:2.4rem;margin-bottom:10px}
+
+.skills{max-width:800px}
+#toast{position:fixed;bottom:26px;right:26px;background:var(--ink);color:var(--white);padding:12px 20px;font-weight:700;transform:translateY(160px);transition:transform .3s;z-index:10;border-left:6px solid var(--red)}
+#toast.show{transform:translateY(0)}
+
+/* Boîte de dialogue */
+dialog{background:var(--white);color:var(--ink);border:4px solid var(--ink);width:min(920px,94vw);padding:34px;max-height:90vh}
+dialog::backdrop{background:rgba(20,20,20,.6)}
+.form{display:grid;gap:16px 18px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.form .full{grid-column:1/-1}
+
+@media(max-width:1000px){
+  .span-8,.span-4,.span-6,.span-3{grid-column:span 12}
+  .span-3{grid-column:span 6}
+  nav button{padding:0 12px}
+}
+@media(max-width:680px){
+  .top{padding:0 18px}
+  main{padding:22px 16px 60px}
+  .span-3{grid-column:span 12}
+  .kpi .v{font-size:3.4rem}
+  .bar{grid-template-columns:110px 1fr 46px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="k">ALTERNANCE</span><span class="t">Mes candidatures</span></div>
+  <nav>
+    <button class="on" data-v="home"><b>01</b>Accueil</button>
+    <button data-v="cands"><b>02</b>Candidatures</button>
+    <button data-v="rel"><b>03</b>Relances</button>
+    <button data-v="profil"><b>04</b>Compétences</button>
+  </nav>
+</header>
+
+<main>
+  <section class="view on" id="v-home">
+    <div class="page">
+      <div class="panel span-8">
+        <span class="kicker">À RELANCER</span>
+        <h2 id="greet">Bonjour</h2>
+        <p class="sub" id="today"></p>
+        <div id="focus"></div>
+      </div>
+
+      <div class="span-4 coach">
+        <div class="bubble" id="bubble"></div>
+        <div class="panel kpi dark" style="margin-top:6px">
+          <div class="v" id="kRate">–</div>
+          <div><div class="l">Taux de réponse</div><div class="hint" id="kRateHint"></div></div>
+        </div>
+      </div>
+
+      <div class="panel span-4 kpi">
+        <div class="v" id="kTotal">0</div>
+        <div><div class="l">Candidatures envoyées</div><div class="hint" id="kTotalHint"></div></div>
+      </div>
+      <div class="panel span-4 kpi">
+        <div class="v" id="kInter">0</div>
+        <div><div class="l">Entretiens et tests</div><div class="hint">Étapes à préparer</div></div>
+      </div>
+      <div class="panel span-4 kpi">
+        <div class="v" id="kAvg">–</div>
+        <div><div class="l">Délai moyen de réponse</div><div class="hint">En jours, depuis l'envoi</div></div>
+      </div>
+
+      <div class="panel span-12">
+        <span class="kicker">ÉTAPES</span>
+        <h2>Où en sont vos candidatures</h2>
+        <p class="sub">Chaque segment est une étape. Plus il est large, plus il y a de candidatures.</p>
+        <div class="seg" id="seg"></div>
+        <div class="legend" id="legend"></div>
+      </div>
+
+      <div class="panel span-6">
+        <span class="kicker">ACTIVITÉ</span>
+        <h2>Envois par semaine</h2>
+        <p class="sub">Huit dernières semaines. La barre rouge est la semaine en cours.</p>
+        <div class="weeks" id="weeks"></div>
+      </div>
+      <div class="panel span-6">
+        <span class="kicker">CANAUX</span>
+        <h2>Réponses par canal</h2>
+        <p class="sub">Part des candidatures qui ont reçu une réponse.</p>
+        <div id="canaux"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="v-cands">
+    <div class="toolbar">
+      <input id="q" placeholder="Rechercher une entreprise, un poste, une ville">
+      <select id="fs"></select>
+      <select id="fo">
+        <option value="relance">Trier par prochaine relance</option>
+        <option value="date">Trier par date d'envoi</option>
+        <option value="score">Trier par correspondance</option>
+        <option value="nom">Trier de A à Z</option>
+      </select>
+      <button class="btn red" data-act="new">+ Nouvelle candidature</button>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Entreprise et poste</th><th>Statut</th><th>Envoyée</th><th>Relance</th><th>Correspondance</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="view" id="v-rel">
+    <div class="panel">
+      <span class="kicker">RELANCES</span>
+      <h2>Relances à faire</h2>
+      <p class="sub">« Relancée » reporte la prochaine relance de sept jours. « Modèle » copie un message prêt à envoyer.</p>
+      <div id="relList"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-profil">
+    <div class="panel skills">
+      <span class="kicker">COMPÉTENCES</span>
+      <h2>Vos compétences</h2>
+      <p class="sub">Listez-les séparées par des virgules. Chaque fiche de poste est comparée à cette liste pour calculer la correspondance.</p>
+      <textarea id="skillsIn" style="min-height:160px" placeholder="python, sql, excel, react, communication, power bi, seo"></textarea>
+      <div style="margin-top:18px"><button class="btn red" id="saveSkills">Enregistrer</button></div>
+    </div>
+  </section>
+</main>
+
+<dialog id="dlg">
+  <span class="kicker">FICHE</span>
+  <h2 id="dlgTitle" style="font-size:1.6rem">Nouvelle candidature</h2>
+  <p class="sub">Seuls l'entreprise et le poste sont obligatoires.</p>
+  <form id="f" class="form">
+    <label>Entreprise *<input name="entreprise" required></label>
+    <label>Poste *<input name="poste" required></label>
+    <label>Ville<input name="ville"></label>
+    <label>Secteur<input name="secteur" placeholder="Santé, tech, industrie"></label>
+    <label>Taille<select name="taille"><option>1-10</option><option>11-50</option><option>51-250</option><option>251-1000</option><option>1000+</option></select></label>
+    <label>Site web<input name="site" type="url"></label>
+    <label>Type de contrat<select name="type"><option>Contrat d'apprentissage</option><option>Contrat de professionnalisation</option><option>Stage</option></select></label>
+    <label>Canal<select name="canal" data-opts="canal"></select></label>
+    <label>Statut<select name="statut" data-opts="st"></select></label>
+    <label>Motivation<select name="motivation" data-opts="mot"></select></label>
+    <label>Date d'envoi<input type="date" name="dateCand"></label>
+    <label>Date de relance prévue<input type="date" name="dateRelance"></label>
+    <label>Date de réponse<input type="date" name="reponseDate"></label>
+    <label>Contact (RH, manager)<input name="contact"></label>
+    <label>Email du contact<input type="email" name="email"></label>
+    <label>Lien de l'annonce<input type="url" name="lien"></label>
+    <label class="full">Fiche de poste (texte collé)<textarea name="fiche" style="min-height:110px"></textarea></label>
+    <label class="full">Notes<textarea name="notes"></textarea></label>
+    <div class="full" style="display:flex;justify-content:flex-end;gap:10px">
+      <button class="btn" type="button" id="cancel">Annuler</button>
+      <button class="btn red" type="submit">Enregistrer</button>
+    </div>
+  </form>
+</dialog>
+<div id="toast" role="status"></div>
+
+<script>
+const KEY='candidatures-v5';
+const ST={aenvoyer:'À envoyer',envoyee:'Envoyée',relancee:'Relancée',entretien:'Entretien',test:'Test',offre:'Offre',refus:'Refus',sans:'Sans réponse'};
+const COL={aenvoyer:'#FFFFFF',envoyee:'#D9D4C7',relancee:'#141414',entretien:'#E4312B',test:'#F08C86',offre:'#141414',refus:'#FFFFFF',sans:'#8A8478'};
+const WAIT=['envoyee','relancee'], RESP=['entretien','test','offre','refus'];
+const CANAUX=['LinkedIn','Site carrière','Indeed','Welcome to the Jungle','Email direct','Candidature spontanée','Recommandation','Salon / forum','Autre'];
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const TODAY=()=>iso(new Date());
+const addDays=(s,n)=>{const d=new Date((s||TODAY())+'T00:00');d.setDate(d.getDate()+n);return iso(d)};
+const diff=(a,b)=>Math.round((new Date(a+'T00:00')-new Date(b+'T00:00'))/864e5);
+const fr=s=>s?s.split('-').reverse().join('/'):'—';
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+let D={apps:[],skills:''};
+try{D=JSON.parse(localStorage.getItem(KEY))||D}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}};
+let editId=null, F={q:'',s:'all',o:'relance'};
+
+const skillsArr=()=>D.skills.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
+const match=a=>{const s=skillsArr();if(!s.length||!a.fiche)return null;const f=a.fiche.toLowerCase();return Math.round(s.filter(k=>f.includes(k)).length/s.length*100)};
+const pending=()=>D.apps.filter(a=>WAIT.includes(a.statut)&&a.dateRelance).map(a=>({...a,d:diff(a.dateRelance,TODAY())})).sort((x,y)=>x.d-y.d);
+const cnt=k=>D.apps.filter(a=>a.statut===k).length;
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200)};
+const dueTxt=a=>a.d<0?`En retard de ${-a.d} j`:a.d===0?"À relancer aujourd'hui":`Dans ${a.d} j`;
+const dueCls=a=>a.d<0?'late':a.d===0?'today':'';
+
+function stats(){
+  const A=D.apps, sent=A.filter(a=>a.statut!=='aenvoyer'), resp=A.filter(a=>RESP.includes(a.statut));
+  const inter=A.filter(a=>['entretien','test','offre'].includes(a.statut));
+  const delays=A.filter(a=>a.reponseDate&&a.dateCand).map(a=>diff(a.reponseDate,a.dateCand));
+  return {A,sent,resp,inter,rate:sent.length?Math.round(resp.length/sent.length*100):null,avg:delays.length?Math.round(delays.reduce((x,y)=>x+y,0)/delays.length):null};
+}
+
+function renderHome(){
+  const s=stats(), pend=pending(), late=pend.filter(p=>p.d<0).length;
+  const h=new Date().getHours();
+  $('#greet').textContent=h<18?'Bonjour':'Bonsoir';
+  $('#today').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+
+  $('#focus').innerHTML=pend.length?pend.slice(0,5).map(a=>`<div class="todo ${dueCls(a)}">
+    <div class="idx">${a.d<0?'!':a.d===0?'0':a.d}</div>
+    <div><div class="n">${esc(a.entreprise)}</div><div class="meta">${esc(a.poste)} · envoyée le ${fr(a.dateCand)} · relance n°${(a.nbRelances||0)+1}</div><div class="due">${dueTxt(a)}</div></div>
+    <button class="btn sm ink" data-act="relance" data-id="${a.id}">Relancée</button></div>`).join('')
+    :'<p class="empty">Aucune relance en attente. Vous êtes à jour.</p>';
+
+  let msg;
+  if(!s.A.length)msg="Commencez par ajouter une candidature. Le tableau se remplira au fur et à mesure.";
+  else if(late)msg=`${late} relance${late>1?'s sont':' est'} en retard. Commencez par celle-là, en haut de la liste.`;
+  else if(s.inter.length)msg="Un entretien est prévu ou a eu lieu. Relisez la fiche de poste avant la prochaine étape.";
+  else if(!pend.length)msg="Rien à relancer. Envoyez une nouvelle candidature pour garder un rythme régulier.";
+  else msg=`${pend.length} relance${pend.length>1?'s':''} à faire. Une par jour suffit.`;
+  $('#bubble').textContent=msg;
+
+  $('#kRate').textContent=s.rate===null?'–':s.rate+'%';
+  $('#kRateHint').textContent=s.sent.length?`${s.resp.length} réponse${s.resp.length>1?'s':''} sur ${s.sent.length}`:'Aucun envoi pour l\'instant';
+  $('#kTotal').textContent=s.sent.length;
+  $('#kTotalHint').textContent=`${s.A.length} au total dans le suivi`;
+  $('#kInter').textContent=s.inter.length;
+  $('#kAvg').textContent=s.avg===null?'–':s.avg+' j';
+
+  const keys=Object.keys(ST), total=s.A.length||1;
+  $('#seg').innerHTML=s.A.length?keys.map(k=>cnt(k)?`<i style="width:${cnt(k)/total*100}%;background:${COL[k]}" title="${ST[k]} : ${cnt(k)}"></i>`:'').join(''):'<i style="width:100%;background:var(--screen)"></i>';
+  $('#legend').innerHTML=keys.map(k=>`<span><i class="sw" style="background:${COL[k]}"></i>${ST[k]} <b>${cnt(k)}</b></span>`).join('');
+
+  const mon=new Date();mon.setHours(0,0,0,0);mon.setDate(mon.getDate()-((mon.getDay()+6)%7));
+  const weeks=[];
+  for(let i=7;i>=0;i--){const st=new Date(mon);st.setDate(st.getDate()-7*i);const en=new Date(st);en.setDate(en.getDate()+7);
+    const n=s.A.filter(a=>a.dateCand&&new Date(a.dateCand+'T00:00')>=st&&new Date(a.dateCand+'T00:00')<en).length;
+    weeks.push({l:st.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}),n});}
+  const wm=Math.max(1,...weeks.map(w=>w.n));
+  $('#weeks').innerHTML=weeks.map(w=>`<div><b>${w.n}</b><i style="height:${Math.max(4,w.n/wm*170)}px"></i><span style="margin-top:8px">${w.l}</span></div>`).join('');
+
+  const canaux=[...new Set(s.A.map(a=>a.canal||'Autre'))];
+  $('#canaux').innerHTML=canaux.length?canaux.map(c=>{const x=s.A.filter(a=>(a.canal||'Autre')===c&&a.statut!=='aenvoyer'),r=x.filter(a=>RESP.includes(a.statut)),p=x.length?Math.round(r.length/x.length*100):0;
+    return `<div class="bar"><span>${esc(c)}</span><div class="t"><i style="width:${p}%"></i></div><b>${p}%</b></div>`}).join(''):'<p class="empty">Pas encore de données.</p>';
+}
+
+function renderCands(){
+  const q=F.q.toLowerCase();
+  let L=D.apps.filter(a=>(!q||[a.entreprise,a.poste,a.ville].join(' ').toLowerCase().includes(q))&&(F.s==='all'||a.statut===F.s));
+  const sc=a=>match(a)??-1;
+  L.sort((a,b)=>{
+    if(F.o==='relance')return (a.dateRelance||'9999')<(b.dateRelance||'9999')?-1:1;
+    if(F.o==='date')return (b.dateCand||'')<(a.dateCand||'')?-1:1;
+    if(F.o==='score')return sc(b)-sc(a);
+    return (a.entreprise||'').localeCompare(b.entreprise||'');
+  });
+  if(!D.apps.length){$('#rows').innerHTML=`<tr><td colspan="6"><div class="onboard"><div class="display">Aucune candidature</div><p class="sub">Ajoutez la première, ou chargez des exemples pour voir le tableau rempli.</p><button class="btn red" data-act="sample">Charger des exemples</button></div></td></tr>`;return}
+  if(!L.length){$('#rows').innerHTML='<tr><td colspan="6" class="empty">Aucun résultat pour ces filtres.</td></tr>';return}
+  const pm=Object.fromEntries(pending().map(p=>[p.id,p]));
+  $('#rows').innerHTML=L.map(a=>{
+    const m=match(a), p=pm[a.id];
+    const opts=Object.entries(ST).map(([k,v])=>`<option value="${k}" ${k===a.statut?'selected':''}>${v}</option>`).join('');
+    return `<tr class="row-click" data-open="${a.id}">
+      <td><div class="co">${esc(a.entreprise)}</div><div class="sm2">${esc(a.poste)}${a.ville?' · '+esc(a.ville):''}</div></td>
+      <td><select data-act="st" data-id="${a.id}" aria-label="Statut">${opts}</select></td>
+      <td class="date">${fr(a.dateCand)}</td>
+      <td class="date">${p?`${fr(a.dateRelance)}<span class="dt ${dueCls(p)}">${dueTxt(p)}</span>`:'<span style="color:var(--mid)">—</span>'}</td>
+      <td>${m!==null?`<div class="match"><div class="t"><i style="width:${m}%"></i></div>${m}%</div>`:'<span style="font-size:.8rem;color:var(--mid)">Fiche absente</span>'}</td>
+      <td style="text-align:right;white-space:nowrap">${p?`<button class="btn sm ink" data-act="relance" data-id="${a.id}">Relancée</button> `:''}<button class="btn sm ghost" data-act="del" data-id="${a.id}">Supprimer</button></td>
+    </tr>`}).join('');
+}
+
+function renderRel(){
+  const p=pending();
+  $('#relList').innerHTML=p.length?p.map(a=>`<div class="todo ${dueCls(a)}">
+    <div class="idx">${a.d<0?'!':a.d===0?'0':a.d}</div>
+    <div><div class="n">${esc(a.entreprise)} <span style="font-weight:400;color:#4F4B43">· ${esc(a.poste)}</span></div><div class="meta">envoyée le ${fr(a.dateCand)} · relance n°${(a.nbRelances||0)+1}</div><div class="due">${dueTxt(a)}</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button class="btn sm" data-act="copy" data-id="${a.id}">Modèle</button><button class="btn sm ink" data-act="relance" data-id="${a.id}">Relancée</button><button class="btn sm ghost" data-act="sans" data-id="${a.id}">Sans réponse</button></div></div>`).join(''):'<p class="empty">Rien à relancer pour le moment.</p>';
+}
+
+function render(){renderHome();renderCands();renderRel();$('#skillsIn').value=D.skills;}
+
+function openForm(a=null){
+  editId=a?a.id:null;
+  const f=$('#f');f.reset();
+  $('#dlgTitle').textContent=a?'Modifier la candidature':'Nouvelle candidature';
+  if(a){for(const [k,v] of Object.entries(a)){if(f.elements[k])f.elements[k].value=v??''}}
+  else{f.elements.dateCand.value=TODAY();f.elements.dateRelance.value=addDays(TODAY(),7);f.elements.statut.value='envoyee';f.elements.motivation.value='4';}
+  $('#dlg').showModal();
+}
+
+function sampleData(){
+  const d=n=>addDays(TODAY(),n);
+  D.apps=[
+    {id:uid(),entreprise:'Doctolib',poste:'Alternant développeur full-stack',ville:'Paris',type:"Contrat d'apprentissage",canal:'LinkedIn',statut:'entretien',dateCand:d(-20),dateRelance:d(-13),reponseDate:d(-12),nbRelances:0,motivation:5,contact:'Sarah L. (RH)',fiche:'React, TypeScript, Node.js, API REST, tests unitaires, git, agile',notes:'Entretien technique jeudi, réviser les hooks React'},
+    {id:uid(),entreprise:'Lyon Data Lab',poste:'Alternant data analyst',ville:'Lyon',type:"Contrat d'apprentissage",canal:'Site carrière',statut:'envoyee',dateCand:d(-9),dateRelance:d(-2),nbRelances:0,motivation:4,fiche:'Python, SQL, pandas, dashboards, statistiques, Power BI'},
+    {id:uid(),entreprise:'Nova Studio',poste:'Alternant marketing digital',ville:'Villeurbanne',type:"Contrat d'apprentissage",canal:'Candidature spontanée',statut:'relancee',dateCand:d(-16),dateRelance:d(0),nbRelances:1,motivation:3,fiche:'SEO, Google Ads, réseaux sociaux, Canva, communication'},
+    {id:uid(),entreprise:'Banque Atlas',poste:'Alternant chargé de projet IT',ville:'Lyon',type:"Contrat d'apprentissage",canal:'Indeed',statut:'refus',dateCand:d(-30),dateRelance:d(-23),reponseDate:d(-25),nbRelances:0,motivation:2,fiche:'gestion de projet, Jira, SQL, excel'}
+  ];
+  save();render();toast('Exemples chargés');
+}
+
+$$('[data-v]').forEach(b=>b.onclick=()=>{
+  $$('[data-v]').forEach(x=>x.classList.toggle('on',x===b));
+  $$('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v));
+});
+$('#cancel').onclick=()=>$('#dlg').close();
+$('#saveSkills').onclick=()=>{D.skills=$('#skillsIn').value;save();render();toast('Compétences enregistrées')};
+$('#q').oninput=e=>{F.q=e.target.value;renderCands()};
+$('#fs').onchange=e=>{F.s=e.target.value;renderCands()};
+$('#fo').onchange=e=>{F.o=e.target.value;renderCands()};
+
+$('#f').onsubmit=e=>{
+  e.preventDefault();
+  const o={};new FormData(e.target).forEach((v,k)=>o[k]=String(v).trim());
+  if(!o.dateRelance&&WAIT.includes(o.statut))o.dateRelance=addDays(o.dateCand||TODAY(),7);
+  o.motivation=+o.motivation||0;
+  const prev=editId?D.apps.find(x=>x.id===editId):null;
+  const rec={nbRelances:0,...prev,...o,id:editId||uid()};
+  if(editId)D.apps=D.apps.map(x=>x.id===editId?rec:x);else D.apps.unshift(rec);
+  save();$('#dlg').close();render();toast('Candidature enregistrée');
+};
+
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');
+  if(b&&b.tagName!=='SELECT'){
+    const id=b.dataset.id, a=D.apps.find(x=>x.id===id), act=b.dataset.act;
+    if(act==='new')return openForm();
+    if(act==='sample')return sampleData();
+    if(act==='del'){if(confirm(`Supprimer la candidature chez ${a.entreprise} ?`)){D.apps=D.apps.filter(x=>x.id!==id);save();render();toast('Candidature supprimée')}return}
+    if(act==='relance'){if(a.statut==='envoyee')a.statut='relancee';a.nbRelances=(a.nbRelances||0)+1;a.dateRelance=addDays(TODAY(),7);save();render();toast('Relance notée, prochaine dans 7 jours');return}
+    if(act==='sans'){a.statut='sans';save();render();toast('Marquée sans réponse');return}
+    if(act==='copy'){
+      const t=`Bonjour${a.contact?' '+a.contact.split(' ')[0]:''},\n\nJe me permets de revenir vers vous au sujet de ma candidature au poste de ${a.poste} chez ${a.entreprise}, envoyée le ${fr(a.dateCand)}. Très motivé(e) par votre entreprise, je reste disponible pour échanger sur mon profil.\n\nCordialement,`;
+      navigator.clipboard?.writeText(t).then(()=>toast('Modèle copié')).catch(()=>prompt('Copiez ce texte :',t));
+      return;
+    }
+  }
+  const row=e.target.closest('tr[data-open]');
+  if(row&&!e.target.closest('button,select,a'))openForm(D.apps.find(x=>x.id===row.dataset.open));
+});
+document.addEventListener('change',e=>{
+  if(e.target.dataset.act==='st'){const a=D.apps.find(x=>x.id===e.target.dataset.id);a.statut=e.target.value;if(RESP.includes(a.statut)&&!a.reponseDate)a.reponseDate=TODAY();save();render();toast('Statut mis à jour')}
+});
+
+$('#fs').innerHTML='<option value="all">Tous les statuts</option>'+Object.entries(ST).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+$('[name=statut]').innerHTML=Object.entries(ST).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+$('[name=canal]').innerHTML=CANAUX.map(c=>`<option>${c}</option>`).join('');
+$('[name=motivation]').innerHTML=[5,4,3,2,1].map(n=>`<option value="${n}">${n} sur 5</option>`).join('');
+render();
+</script>
+</body>
+</html>
