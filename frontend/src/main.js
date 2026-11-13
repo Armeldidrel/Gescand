@@ -7,18 +7,24 @@ import { RESPONSE_STATUSES, STATUS } from './config/constants.js';
 import {
   getState,
   loadState,
+  resetState,
   saveSkills,
   subscribe,
   updateApplication,
 } from './state/store.js';
 import {
+  cleanAuthUrl,
   getSession,
+  hasAuthCallback,
   isAuthRequired,
+  isPasswordRecoveryUrl,
   onAuthChange,
-  signInWithEmail,
   signOut,
 } from './lib/auth.js';
+import { getAuthUrlError } from './lib/authErrors.js';
+import { initialAuthHash } from './lib/supabase.js';
 import { clearUserCache } from './lib/repositories/remoteRepository.js';
+import { initAuthPanel, showAuthPanel } from './components/authPanel.js';
 import { initDialog, openDialog } from './components/applicationDialog.js';
 import { initRouter } from './router.js';
 import { renderAll } from './render.js';
@@ -47,10 +53,11 @@ function setAppInert(inert) {
   });
 }
 
-function showAuth() {
+function showAuth(panelMode, options) {
   $('#auth').hidden = false;
   $('#signOut').hidden = true;
   setAppInert(true);
+  showAuthPanel(panelMode, options);
 }
 
 function hideAuth() {
@@ -175,48 +182,38 @@ function bindGlobalEvents() {
   });
 }
 
-function bindAuth() {
-  $('#authForm').addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    const email = $('#authEmail').value.trim();
-    const message = $('#authMsg');
-    const button = $('#authSubmit');
-    const original = button.innerHTML;
-
-    button.disabled = true;
-    button.textContent = 'Envoi en cours…';
-    message.dataset.state = '';
-    message.textContent = '';
-
-    try {
-      await signInWithEmail(email);
-      message.dataset.state = 'success';
-      message.textContent = 'Lien envoyé. Vérifiez votre boîte mail.';
-    } catch (error) {
-      message.dataset.state = 'error';
-      message.textContent = `Erreur : ${error.message}`;
-    } finally {
-      button.disabled = false;
-      button.innerHTML = original;
-    }
-  });
-
+function bindSignOut() {
   $('#signOut').addEventListener('click', async () => {
     try {
       await signOut();
+      clearUserCache();
+      resetState();
+      showAuth('signin');
     } catch (error) {
       toast(`Erreur : ${error.message}`);
     }
   });
 }
 
+let loading = false;
+
 async function loadWithFeedback() {
+  if (loading) return;
+  loading = true;
+
   try {
     await loadState();
   } catch (error) {
     toast(`Erreur : ${error.message}`);
+  } finally {
+    loading = false;
   }
+}
+
+async function handleAuthenticated() {
+  hideAuth();
+  await loadWithFeedback();
+  if (hasAuthCallback()) cleanAuthUrl();
 }
 
 async function boot() {
@@ -225,7 +222,8 @@ async function boot() {
   initDialog();
   initRouter();
   bindFilters();
-  bindAuth();
+  initAuthPanel({ onSuccess: handleAuthenticated });
+  bindSignOut();
   bindGlobalEvents();
   updateModeBadge();
   subscribe(renderAll);
@@ -237,35 +235,46 @@ async function boot() {
     return;
   }
 
+  const authError = getAuthUrlError(initialAuthHash);
+
   try {
     const session = await getSession();
-    if (session) {
+
+    if (isPasswordRecoveryUrl()) {
+      showAuth('recovery');
+      cleanAuthUrl();
+    } else if (session) {
       hideAuth();
       await loadWithFeedback();
+      if (hasAuthCallback()) cleanAuthUrl();
+    } else if (authError) {
+      showAuth('signin', { message: authError, state: 'error' });
+      cleanAuthUrl();
     } else {
-      showAuth();
+      showAuth('signin');
     }
   } catch (error) {
-    showAuth();
-    $('#authMsg').dataset.state = 'error';
-    $('#authMsg').textContent = `Erreur : ${error.message}`;
+    showAuth('signin', { message: `Erreur : ${error.message}`, state: 'error' });
   }
 
-  onAuthChange(async (session) => {
-    if (session) {
+  onAuthChange(async (event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      showAuth('recovery');
+      return;
+    }
+
+    if (event === 'SIGNED_IN' && session) {
       hideAuth();
       await loadWithFeedback();
-    } else {
+      return;
+    }
+
+    if (event === 'SIGNED_OUT') {
       clearUserCache();
-      showAuth();
+      resetState();
+      showAuth('signin');
     }
   });
-
-  if (window.location.hash.includes('access_token')) {
-    setTimeout(() => {
-      history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
-    }, 500);
-  }
 }
 
 boot();

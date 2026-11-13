@@ -48,15 +48,34 @@
         </ul>
       </aside>
       <div class="auth__card">
-        <span class="kicker">Connexion</span>
+        <div id="authTabs" class="auth__tabs" role="tablist" aria-label="Connexion ou inscription">
+          <button class="auth__tab is-active" type="button" data-auth-mode="signin" role="tab" aria-selected="true">Connexion</button>
+          <button class="auth__tab" type="button" data-auth-mode="signup" role="tab" aria-selected="false">Inscription</button>
+        </div>
+        <span class="kicker" id="authKicker">Connexion</span>
         <h2 id="authTitle" class="auth__title">Mes candidatures</h2>
-        <p class="sub">Entrez votre email pour recevoir un lien de connexion sécurisé. Aucun mot de passe à retenir.</p>
-        <form id="authForm" class="auth__form">
-          <label for="authEmail">Email</label>
-          <input id="authEmail" type="email" name="email" required autocomplete="email" placeholder="prenom@exemple.fr">
-          <button id="authSubmit" class="btn btn--primary" type="submit"><span data-icon="mail"></span>Recevoir le lien</button>
+        <p class="sub" id="authSubtitle">Connectez-vous avec votre email et votre mot de passe.</p>
+        <form id="authForm" class="auth__form" novalidate>
+          <label id="authEmailField" for="authEmail">Email
+            <input id="authEmail" type="email" name="email" required autocomplete="email" placeholder="prenom@exemple.fr">
+          </label>
+          <label id="authPasswordField" for="authPassword">Mot de passe
+            <input id="authPassword" type="password" name="password" required autocomplete="current-password" minlength="8" placeholder="8 caractères minimum">
+          </label>
+          <label id="authPasswordConfirmField" for="authPasswordConfirm" hidden>Confirmer le mot de passe
+            <input id="authPasswordConfirm" type="password" name="passwordConfirm" autocomplete="new-password" minlength="8" placeholder="Répétez le mot de passe">
+          </label>
+          <button id="authSubmit" class="btn btn--primary btn--block" type="submit">
+            <span data-icon="lock"></span><span id="authSubmitLabel">Se connecter</span>
+          </button>
         </form>
         <p id="authMsg" class="auth__msg" role="status" aria-live="polite"></p>
+        <div class="auth__links">
+          <button id="authForgot" class="auth__link" type="button">Mot de passe oublié ?</button>
+          <button id="authMagic" class="auth__link" type="button">Recevoir un lien magique</button>
+          <button id="authResend" class="auth__link" type="button" hidden>Renvoyer l'email de confirmation</button>
+          <button id="authBack" class="auth__link" type="button" hidden>Retour à la connexion</button>
+        </div>
       </div>
     </div>
   </section>

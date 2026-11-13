@@ -58,6 +58,76 @@
   color: var(--color-success);
 }
 
+.auth [hidden] {
+  display: none !important;
+}
+
+.auth__tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 18px;
+  padding: 4px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface-hover);
+}
+
+.auth__tab {
+  flex: 1;
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--color-muted-fg);
+  font-size: 0.84rem;
+  font-weight: 600;
+  transition:
+    background var(--duration) var(--ease-standard),
+    color var(--duration) var(--ease-standard);
+}
+
+.auth__tab:hover {
+  color: var(--color-text);
+}
+
+.auth__tab.is-active {
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-sm);
+}
+
+.auth__links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 14px;
+}
+
+.auth__link {
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  color: var(--color-primary-text);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.auth__link:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.auth__link:disabled {
+  color: var(--color-muted-fg);
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.auth__form .btn {
+  margin-top: 4px;
+}
+
 .auth__features {
   display: grid;
   gap: 14px;
