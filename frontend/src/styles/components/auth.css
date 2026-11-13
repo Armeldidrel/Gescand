@@ -58,14 +58,6 @@
   color: var(--color-success);
 }
 
-.auth__hint {
-  margin: 18px 0 0;
-  padding-top: 14px;
-  border-top: 1px solid var(--color-border);
-  color: var(--color-muted-fg);
-  font-size: 0.76rem;
-}
-
 .auth__features {
   display: grid;
   gap: 14px;
