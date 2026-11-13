@@ -32,6 +32,13 @@ export async function loadState() {
   emit();
 }
 
+export function resetState() {
+  state.apps = [];
+  state.skills = '';
+  state.ready = false;
+  emit();
+}
+
 export async function createApplication(application) {
   const created = await repository.createApplication(application);
   state.apps = [created, ...state.apps];

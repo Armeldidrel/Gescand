@@ -37,9 +37,11 @@ export const remoteRepository = {
   mode: 'remote',
 
   async listApplications() {
+    const userId = await currentUserId();
     const { data, error } = await supabase
       .from('applications')
       .select('*')
+      .eq('user_id', userId)
       .order('created_at', { ascending: false });
 
     throwIfError(error);
@@ -59,10 +61,12 @@ export const remoteRepository = {
   },
 
   async updateApplication(id, patch) {
+    const userId = await currentUserId();
     const { data, error } = await supabase
       .from('applications')
       .update(toRow(patch))
       .eq('id', id)
+      .eq('user_id', userId)
       .select()
       .single();
 
@@ -71,7 +75,12 @@ export const remoteRepository = {
   },
 
   async deleteApplication(id) {
-    const { error } = await supabase.from('applications').delete().eq('id', id);
+    const userId = await currentUserId();
+    const { error } = await supabase
+      .from('applications')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', userId);
     throwIfError(error);
   },
 
